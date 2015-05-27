@@ -1,6 +1,22 @@
+/*===============================================
+=            Relaxjs couch db driver            =
+===============================================*/
+ /**
+ *
+ * A driver to implement basic functionality for couchdb
+ *
+ **/
+ 
+
+
+/*-----  End of Relaxjs couch db driver  ------*/
+
+
+
 var request = require('request');
 var couchDb = 'http://127.0.0.1:5984/';
 var uuidGen = require('./id2otp');
+
 
 
 exports.createDb = function  (dbName, callback) {

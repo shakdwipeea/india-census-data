@@ -1,3 +1,18 @@
+/*========================================
+=            Token generation            =
+========================================*/
+/**
+*
+* Module to generate unique ids (uuid) for couchdb
+*
+**/
+
+
+
+/*-----  End of Token generation  ------*/
+
+
+
 module.exports = function (id, mode, number) {
   
   var crypto = require('crypto');

@@ -16,7 +16,7 @@
 var request = require('request');
 var couchDb = 'http://127.0.0.1:5984/';
 var uuidGen = require('./id2otp');
-
+var _ = require('lodash')
 
 
 exports.createDb = function  (dbName, callback) {
@@ -61,9 +61,9 @@ exports.insert = function  (dbName, doc, callback) {
 	})
 }
 
-exports.getDocByProperty = function  (dbName, prop, callback) {
-	//To be implemented
-	request.get(couchDb + dbName + '/_all_docs/?include_docs=true', function  (err, res, body) {
+exports.getCityByDistrict = function  (dbName, district, callback) {
+	//To be implemented not usable
+	request.get(couchDb + dbName + '/_design/city_doc/_view/city_district_view?key=' + district, function  (err, res, body) {
 		if(err) {
 			callback(err, null);
 		} else {
@@ -73,9 +73,7 @@ exports.getDocByProperty = function  (dbName, prop, callback) {
 
 			var arr = body.rows;
 
-			var doc = _.filter(arr, prop)
-
-			callback(null, doc);
+			callback(null, arr);
 		}
 	})
 }

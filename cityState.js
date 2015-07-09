@@ -6,7 +6,7 @@
  var dbNameWrite = 'city';
  var dbNameRead = 'census';
 
-  relax.createDb(dbNameWrite, function  (err) {
+/*  relax.createDb(dbNameWrite, function  (err) {
  	if(err == "file_exists") {
  		//Db exists
  		console.log('Db exists');
@@ -17,11 +17,27 @@
  	//Db created
  	console.log("Db created")
  	start();
+ })*/
+
+
+ var dbName = 'census';
+
+ var MongoClient = require('mongodb').MongoClient;
+ var url = 'mongodb://localhost:27017/' + dbName;
+
+ MongoClient.connect(url, function  (err, db) {
+ 	if(err) {
+ 		console.log(err)
+ 		throw new Error(err)
+ 	} 
+
+ 	start(db);
  })
 
 
 
-function start() {
+
+function start(db) {
 
 	relax.getAll(dbNameRead, function  (err, rows) {
 		if(err) {
@@ -33,14 +49,14 @@ function start() {
 
 
 		_.each(districts, function  (value) {
-			getData(value);
+			getData(value, db);
 		})
 	})
 
 	
 }
 
-function getData (district) {
+function getData (district, db) {
 	console.log(district)
 	var query = {
 		url: 'http://en.wikipedia.org/wiki/Category:Cities_and_towns_in_' + district + '_district',
@@ -66,11 +82,17 @@ function getData (district) {
 				district: district
 			}
 
-			relax.insert(dbNameWrite, JSON.stringify(doc), function  (err) {
+			/*relax.insert(dbNameWrite, JSON.stringify(doc), function  (err) {
 				if(err) {
 					throw new Error(err)
 				}
+			})*/
+
+			db.collection('city').insertOne(doc, function  (err, d) {
+				if (err) {console.log(err)};
+				console.log("Write")
 			})
+
 		})
 	})
 }
